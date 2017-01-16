@@ -208,7 +208,7 @@ server <- function(input, output) {
       ),
       tabPanel("Teste de assimetria",
                wellPanel(
-                 verbatimTextOutput("eggerTest")
+                 verbatimTextOutput("beggTest")
                )
       )
       # tabPanel("Boot Density",
@@ -365,28 +365,28 @@ server <- function(input, output) {
     }
   )
   
-  ################################################
-  # Teste de assimetria egger
-  ################################################
-  output$eggerTest <- renderPrint ({
-    meta <- meta()
-     if (!is.null(meta)) {
-       return(list(metabias(meta, k.min=3),
-                   cor.test()
-                   ))
-     } else {
-       frame()
-     }
-  })
-  
   # ################################################
-  # # Teste de assimetria begg
+  # # Teste de assimetria egger
   # ################################################
-  # output$beggTest <- renderPrint ({
-  #    if (!is.null(meta())) {
-  #      return(metabias(meta, k.min=3))
+  # output$eggerTest <- renderPrint ({
+  #   meta <- meta()
+  #    if (!is.null(meta)) {
+  #      return(list(metabias(meta, k.min=3),
+  #                  cor.test()
+  #                  ))
   #    } else {
   #      frame()
   #    }
   # })
+  
+  ################################################
+  # Teste de assimetria begg
+  ################################################
+  output$beggTest <- renderPrint ({
+     if (!is.null(meta())) {
+       return(metabias(meta(), k.min=3))
+     } else {
+       frame()
+     }
+  })
 }
