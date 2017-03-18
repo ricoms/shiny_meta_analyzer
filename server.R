@@ -97,9 +97,9 @@ server <- function(input, output) {
                           
                           conditionalPanel( # diferenca de medias
                             condition = "input.modelo == 'df_med1'",
-                            p(h3('Configurações para modelo de diferença de médias:')),
+                            p(h3('Configurações para modelo de diferença entre médias:')),
                             selectInput(inputId = 'smmean',
-                                        label = 'Medidas do modelo de diferença de médias',
+                                        label = 'Medidas do modelo de diferença entre médias',
                                         choices = c('mean difference'='MD',
                                                     'standardised mean difference'='SMD'),
                                         selected = "MD",
@@ -113,7 +113,7 @@ server <- function(input, output) {
                             condition = "input.modelo == 'df_medp'",
                             p(h3('Configurações para modelo de diferença na média padronizada:')),
                             selectInput(inputId = 'smmean',
-                                        label = 'Medidas do modelo de diferença de médias',
+                                        label = 'Medidas do modelo de diferença entre médias',
                                         choices = c('mean difference'='MD',
                                                     'standardised mean difference'='SMD'),
                                         selected = "MD",
@@ -196,7 +196,7 @@ server <- function(input, output) {
       width = 12,
       tabPanel("Forest Plot",
                wellPanel(
-                 plotOutput("forest", height = 400, width = 600),
+                 plotOutput("forest", height = 400, width = 800),
                  downloadButton('downloadForest', 'Save forest as pdf')
                )
       ),
@@ -205,12 +205,12 @@ server <- function(input, output) {
                  plotOutput("funnel", height = 400, width = 600),
                  downloadButton('downloadFunnel', 'Salvar funnel como pdf')
                )
-      ),
-      tabPanel("Teste de assimetria",
-               wellPanel(
-                 verbatimTextOutput("beggTest")
-               )
       )
+      # tabPanel("Teste de assimetria",
+      #          wellPanel(
+      #            verbatimTextOutput("beggTest")
+      #          )
+      # )
       # tabPanel("Boot Density",
       #          wellPanel(
       #            plotOutput("dens"),

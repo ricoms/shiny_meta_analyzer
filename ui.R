@@ -14,7 +14,7 @@ ui <- dashboardPage(skin = "yellow",
     sidebarMenu( id = "menu",
       menuItem("App", tabName = "app", icon = icon("home")),
       #menuItem("Configurações Avançadas", tabName = "config", icon = icon("dashboard")),
-      menuItem("About", tabName = "about", icon = icon("glyphicon glyphicon-info-sign", lib= "glyphicon")),
+      menuItem("Sobre", tabName = "about", icon = icon("glyphicon glyphicon-info-sign", lib= "glyphicon")),
       #menuItem("Source code", icon = icon("file-code-o"),
                #href = "https://github.com")
       
@@ -25,25 +25,25 @@ ui <- dashboardPage(skin = "yellow",
           column(
             width = 12,
             box(
-              title = "Selecione",
+              title = "Selecione abaixo",
               width = 12,
               background = "orange",
-              "Escolha os valores abaixo."
+              selectInput(inputId = 'modelo',
+                          label = 'Medidas de efeito',
+                          choices = c('Proporção'='df_prop',
+                                      'Diferença entre médias'='df_medp',
+                                      'Correlação'='df_corr',
+                                      'Resposta dicotômica'='df_dich'
+                          ),
+                          width = 200,
+                          selected = NULL,
+                          multiple = FALSE
+              ),
+              numericInput(inputId = "alpha", label = "Nível de significância",
+                           value = 0.05, min = 0.00, max = 1,
+                           width = 200, step = 0.01)
             ),
-            selectInput(inputId = 'modelo',
-                        label = 'Medidas de efeito',
-                        choices = c('Proporção'='df_prop',
-                                    'Diferença de médias'='df_medp',
-                                    'Correlação'='df_corr',
-                                    'Resposta dicotômica'='df_dich'
-                        ),
-                        width = 200,
-                        selected = NULL,
-                        multiple = FALSE
-            ),
-            numericInput(inputId = "alpha", label = "Nível de significância",
-                         value = 0.05, min = 0.00, max = 1,
-                         width = 200, step = 0.01),
+            
             box(width = 9,
               actionButton("escolher_modelo", "Definir modelo"),
               background = "orange"
@@ -73,8 +73,8 @@ ui <- dashboardPage(skin = "yellow",
     # tab about
     tabItem(tabName = "about",
             h2("Projeto: Meta analyzer"),
-            p("Orientadora: Prof. Dra. Camila Bertini Martins"),
-            p("Alunos: Alexandre Hild Aono (92169) & Ricardo Manhães Savii (92482)")
+            HTML("<p>Desenvolvedor: Ricardo Manhães Savii <a href = 'http://lattes.cnpq.br/7614391299549728'>(lattes)</a></p>"),
+            HTML("<p>Orientadora: Profa Dra. Camila Bertini Martins <a href = 'http://lattes.cnpq.br/3770708843269785'>(lattes)</a></p>")
     )
   )
 ))
