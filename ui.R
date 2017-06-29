@@ -9,7 +9,7 @@ ui <- dashboardPage(skin = "yellow",
   ## e salvar a chave de tracking em arquivo com nome google-analytics.js
   ## na pasta do projeto e sem '<script></script>'
   
-  dashboardHeader(title = "Metadata analyzer"),
+  dashboardHeader(title = "Meta Analyzer"),
   dashboardSidebar(
     sidebarMenu( id = "menu",
       menuItem("App", tabName = "app", icon = icon("home")),
