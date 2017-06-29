@@ -49,7 +49,13 @@ ui <- dashboardPage(skin = "yellow",
               background = "orange"
             )
             
-
+            box(width = 12,
+              HTML("<p>Ricardo Manhães Savii (<a href = 'http://lattes.cnpq.br/7614391299549728'>lattes</a>),
+                    Alexandre, 
+                    Profa Dra. Camila Bertini Martins (<a href = 'http://lattes.cnpq.br/3770708843269785'>lattes</a>)</p>"),
+              HTML("<p></p>")
+            ),
+            
           )#end column
         )#end fluidrow
       )#end conditional
@@ -71,10 +77,10 @@ ui <- dashboardPage(skin = "yellow",
       ),
       
     # tab about
-    tabItem(tabName = "about",
-            h2("Projeto: Meta analyzer"),
-            HTML("<p>Desenvolvedor: Ricardo Manhães Savii <a href = 'http://lattes.cnpq.br/7614391299549728'>(lattes)</a></p>"),
-            HTML("<p>Orientadora: Profa Dra. Camila Bertini Martins <a href = 'http://lattes.cnpq.br/3770708843269785'>(lattes)</a></p>")
-    )
+    #tabItem(tabName = "about",
+    #        h2("Projeto: Meta analyzer"),
+    #        HTML("<p>Desenvolvedor: Ricardo Manhães Savii <a href = 'http://lattes.cnpq.br/7614391299549728'>(lattes)</a></p>"),
+    #        HTML("<p>Orientadora: Profa Dra. Camila Bertini Martins <a href = 'http://lattes.cnpq.br/3770708843269785'>(lattes)</a></p>")
+    #)
   )
 ))
