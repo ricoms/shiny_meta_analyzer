@@ -18,7 +18,7 @@ compute_meta = list(
 # Argumentos utilizados para as funções dos effect-sizes
 ################################################
 arg_meta = reactiveValues(
-  df_prop = list(event = dados$data$eventos, n = dados$data$n,
+  df_prop = list(event = dados$data$events, n = dados$data$n,
                   sm = input$smprop, method.ci = input$ciprop, method.tau = input$measure),
 
   df_medp = list(data = dados$data,

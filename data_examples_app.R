@@ -3,17 +3,17 @@
 ################################################
 # Modelo de proporção
 ################################################
-df_prop = data.frame(Estudos = c("Study 1",
+df_prop = data.frame(Studies = c("Study 1",
                                "Study 2",
                                "Study 3",
                                "Study 4"),
-                     eventos = c(17, 23, 6, 106),
+                     events = c(17, 23, 6, 106),
                      n = c(30, 50, 30, 189))
 
 ################################################
 # Modelo de diferença de médias 
 ################################################
-df_medp = data.frame(Estudos = c("Study 1",
+df_medp = data.frame(Studies = c("Study 1",
                                "Study 2",
                                "Study 3",
                                "Study 4"),
@@ -27,17 +27,17 @@ df_medp = data.frame(Estudos = c("Study 1",
 ################################################
 # Modelo de correlação
 ################################################
-df_corr = data.frame(Estudos = c("Study 1",
+df_corr = data.frame(Studies = c("Study 1",
                                "Study 2",
                                "Study 3",
                                "Study 4"),
-                     N = c(351, 163, 328, 1718),
+                     n = c(351, 163, 328, 1718),
                      r = c(0.01, 0.4, 0.162, 0.225))
 
 ################################################
 # Modelos dicotômicos RR, RD ou OR
 ################################################
-df_dich = data.frame(Estudos = c("Study 1",
+df_dich = data.frame(Studies = c("Study 1",
                                "Study 2",
                                "Study 3",
                                "Study 4"),

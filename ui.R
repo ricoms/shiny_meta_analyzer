@@ -33,9 +33,7 @@ ui <- dashboardPage(skin = "yellow",
                                       'Correlation'='df_corr',
                                       'Dichotomous Models'='df_dich'
                           ),
-                          width = 200,
-                          selected = NULL,
-                          multiple = FALSE
+                          width = 200, selected = NULL, multiple = FALSE
               ),
               numericInput(inputId = "alpha", label = "Level of significance",
                            value = 0.05, min = 0.00, max = 1,

@@ -25,32 +25,48 @@ server <- function(input, output) {
   output$painel <- renderUI({
     if(input$escolher_modelo){
       tabBox(
-        title = "Input and Configuration",
-        id = "ttabs",
-        width = 12,
+        title = "Input and Configuration", id = "ttabs", width = 12,
+        
         tabPanel("Manual Input",
-                 wellPanel(
-                   rHandsontableOutput("hot"),
-                   tags$hr(),
-                   tags$head(
-                     tags$style(HTML('#plot{background-color:orange}'))
-                   ),
-                   actionButton("plot", "Generate results", width = "150px"),
-                   downloadButton('downloadData', 'Save Data')
-                 )
-        ),
+                 fluidRow(
+                      column(3,
+                        rHandsontableOutput("hot")
+                      ),
+                      column(4,
+                        HTML("<h4>Standard headers</h4>"),
+                        HTML("<p><b>Studies</b>: identification of different studies to be compared.</p>"),
+                        HTML("<p><b>events</b>: number of positive events.</p>"),
+                        HTML("<p><b>n</b>: the total number of cases included.</p>"),
+                        HTML("<p><b>r</b>: correlation coefficient reported.</p>")
+                      ),
+                      column(5,
+                        HTML("<p><b>mean</b>: mean of group.</p>"),
+                        HTML("<p><b>sd</b>: standard deviation of group.</p>"),
+                        HTML("<p><b>#.e</b>: measure of experimental group.</p>"),
+                        HTML("<p><b>#.c</b>: measure of control group</p>")
+                      ),
+                      column(12,
+                        tags$hr(),
+                        tags$head(
+                          tags$style(HTML('#plot{background-color:orange}'))
+                        ),
+                        actionButton("plot", "Generate results", width = "150px"),
+                        downloadButton('downloadData', 'Save Data')
+                      ),
+                      tags$br() 
+                    )#endfluidrow
+        ),#endtabpanel
+        
         tabPanel("Import File",
                  fluidRow(
-                   column(
-                     4,
+                   column(4,
                      checkboxInput(inputId = "header", label = "Header", TRUE),
                      radioButtons(inputId = "sep", label = "Separator",
                                   choices = c('comma ,'=',', 'semicolon ;'=';','tab'='\t'), selected = ","),
                      radioButtons(inputId = "quote", label = "Citation",
                                   choices = c('none'='', 'double quotes " "'='"',"single quotation marks ' '"="'"),selected = '"')
                    ),
-                   column(
-                     8,
+                   column(8,
                      fileInput("arquivo", "Choose .csv or .txt file",
                                accept=c('text/csv','text/comma-separated-values',
                                         'text/tab-separated-values','text/plain','.csv','.tsv','.txt')),
@@ -62,8 +78,8 @@ server <- function(input, output) {
                    )
                    
                  )#endfluidrow
-                 
         ),#endtabpanel
+        
         tabPanel("Advanced settings",
                  fluidRow(
                    column(6,
@@ -120,9 +136,7 @@ server <- function(input, output) {
                                         label = 'Mean differences measures',
                                         choices = c('mean difference'='MD',
                                                     'standardized mean difference'='SMD'),
-                                        selected = "MD",
-                                        width = 300,
-                                        multiple = FALSE
+                                        selected = "MD", width = 300, multiple = FALSE
                             ),
                             p(h6('There is no metric used as default in the metafor package.')),
                             selectInput(inputId = 'smdmean',
@@ -130,9 +144,7 @@ server <- function(input, output) {
                                         choices = c('Hedges\' g (1981)'='Hedges',
                                                     'Cohen\'s d (1988)'='Cohen',
                                                     'Glass\' delta (1976)'='Glass'),
-                                        selected = "Hedges",
-                                        width = 300,
-                                        multiple = FALSE
+                                        selected = "Hedges", width = 300, multiple = FALSE
                             ),
                             p(h6('The Hedges method is used as default in the metafor package.'))
                           ),
@@ -144,9 +156,7 @@ server <- function(input, output) {
                                         label = 'Correlation measures',
                                         choices = c('Raw correlation coefficient'='COR',
                                                     'Fisher\'s z transformation of correlations'='ZCOR'),
-                                        selected = "ZCOR",
-                                        width = 300,
-                                        multiple = FALSE
+                                        selected = "ZCOR", width = 300, multiple = FALSE
                             ),
                             p(h6('The Fisher measure is used as default in the metafor package.'))
                           ),
@@ -179,9 +189,7 @@ server <- function(input, output) {
                                                   'Hedges'='HE',
                                                   'Empirical Bayes'='EB',
                                                   'Paule-Mandel method (1982)'='PM'),
-                                      selected = "DL",
-                                      width = 300,
-                                      multiple = FALSE
+                                      selected = "DL", width = 300, multiple = FALSE
                           ),
                           p(h6('DerSimonian-Laird is the default estimator in the metafor package.')),
                           
@@ -196,7 +204,7 @@ server <- function(input, output) {
   output$results <- renderUI({
     tabBox(
       title = "Results",
-      id = "tresults",
+      id = "results",
       width = 12,
       tabPanel("Forest Plot",
                wellPanel(
@@ -255,9 +263,13 @@ server <- function(input, output) {
     values$data <- read.table(inFile$datapath, header = header(), sep = sep(), quote = quote())
   })
   
+  # strmodelo será o espelho de input$modelo
+  strmodelo <- reactiveValues(data = "df_prop")
+  
   # permite a importação de um data.frame previamente criado
   observeEvent (input$escolher_modelo, {
     values$data <- get(input$modelo)
+    strmodelo$data <- input$modelo
   })
   
   # dados é a variável final que será levada até o plot
@@ -312,10 +324,10 @@ server <- function(input, output) {
     meta <- meta()
      if (!is.null(meta)) {
        if (1-pchisq(meta$Q, meta$df.Q) > alpha()) { # if p-value > alpha só apresenta fixed effect model
-         forest(meta, studlab = paste(dados$data$Estudos),
+         forest(meta, studlab = paste(dados$data$Studies),
                 comb.random=FALSE, comb.fixed=TRUE)
        } else {
-         forest(meta, studlab = paste(dados$data$Estudos),
+         forest(meta, studlab = paste(dados$data$Studies),
                 comb.random=TRUE, comb.fixed=FALSE)
        }
      } else {
@@ -344,10 +356,10 @@ server <- function(input, output) {
     meta <- meta()
      if (!is.null(meta)) {
        if (1-pchisq(meta$Q, meta$df.Q) > alpha()) { # if p-value > alpha só apresenta fixed effect model
-         funnel.meta(meta, studlab = paste(dados$data$Estudos),
+         funnel.meta(meta, studlab = paste(dados$data$Studies),
                 comb.random=FALSE, comb.fixed=TRUE)
        } else {
-         funnel.meta(meta, studlab = paste(dados$data$Estudos),
+         funnel.meta(meta, studlab = paste(dados$data$Studies),
                 comb.random=TRUE, comb.fixed=FALSE)
        }
      } else {
