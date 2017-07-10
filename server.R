@@ -12,17 +12,19 @@ server <- function(input, output) {
   
   #Abas sendo criadas
   output$desc <- renderUI({
-    if(input$escolher_modelo){
-      box(title = "Meta-analise", width = 12, solidHeader = TRUE, status = "primary",
-          "Selecione o tipo de entrada para construir a sua analise."
-      )
-    }
+      box(title = "About", width = 12, solidHeader = TRUE, status = "primary",
+          HTML("<h3>Authors</h3>
+                <p>Ricardo Manhães Savii (<a href = 'http://lattes.cnpq.br/7614391299549728'>lattes</a>),</p>
+                <p>Alexandre Hild Aono (<a href = 'http://lattes.cnpq.br/5745062922235619'>lattes</a>), </p>
+                <p>Profa Dra. Camila Bertini Martins (<a href = 'http://lattes.cnpq.br/3770708843269785'>lattes</a>)</p><br>"),
+          HTML("<p>Select below the type of input to build your analysis.</p>")
+          )
   })
   
   output$painel <- renderUI({
     if(input$escolher_modelo){
       tabBox(
-        title = "Entrada e Config",
+        title = "Input and Configuration",
         id = "ttabs",
         width = 12,
         tabPanel("Manual Input",
@@ -32,42 +34,43 @@ server <- function(input, output) {
                    tags$head(
                      tags$style(HTML('#plot{background-color:orange}'))
                    ),
-                   actionButton("plot", "Gerar resultados", width = "150px"),
-                   downloadButton('downloadData', 'Salvar Tabela')
+                   actionButton("plot", "Generate results", width = "150px"),
+                   downloadButton('downloadData', 'Save Data')
                  )
         ),
-        tabPanel("Import",
+        tabPanel("Import File",
                  fluidRow(
                    column(
                      4,
-                     checkboxInput(inputId = "header", label = "Cabeçalho", TRUE),
-                     radioButtons(inputId = "sep", label = "Separador",
-                                  choices = c('virgula'=',', 'ponto e virgula'=';','tabulação'='\t'), selected = ","),
-                     radioButtons(inputId = "quote", label = "Citação",
-                                  choices = c('sem'='', 'aspas duplas'='"','aspas simples'="'"),selected = '"')
+                     checkboxInput(inputId = "header", label = "Header", TRUE),
+                     radioButtons(inputId = "sep", label = "Separator",
+                                  choices = c('comma ,'=',', 'semicolon ;'=';','tab'='\t'), selected = ","),
+                     radioButtons(inputId = "quote", label = "Citation",
+                                  choices = c('none'='', 'double quotes " "'='"',"single quotation marks ' '"="'"),selected = '"')
                    ),
                    column(
                      8,
-                     fileInput("arquivo", "Escolher arquivo .csv ou .txt",
+                     fileInput("arquivo", "Choose .csv or .txt file",
                                accept=c('text/csv','text/comma-separated-values',
                                         'text/tab-separated-values','text/plain','.csv','.tsv','.txt')),
-                     actionButton("botao_arquivo", "Importar arquivo"),
+                     actionButton("botao_arquivo", "Import file"),
                      tags$hr(),
-                     tags$p("Escreva suas entradas em um arquivo .csv ou .txt."),
-                     tags$p("Cada linha de seu arquivo será considerada como uma observação multivariada.")
+                     tags$p("Write your input into a .csv or .txt file following the template for the chosen Effect Size."),
+                     tags$p("The template is the column headers visible at Manual Input tab. Each line in your file will be considered as a multivariate."),
+                     tags$p("After a successful import your data should be visible in the table atManual input tab.")
                    )
                    
                  )#endfluidrow
                  
         ),#endtabpanel
-        tabPanel("Configuração Avançada",
+        tabPanel("Advanced settings",
                  fluidRow(
                    column(6,
                           conditionalPanel(
                             condition = "input.modelo == 'df_prop'",
-                            p(h3('Configurações para modelo de proporção:')),
+                            p(h3('Settings for proportion model:')),
                             selectInput(inputId = 'smprop',
-                                        label = 'Medidas do modelo de proporção',
+                                        label = 'Proportion model measures',
                                         choices = c('Logit'='PLOGIT',
                                                     'Log'='PLN',
                                                     'Freeman-Tukey Double arcsine'='PFT',
@@ -77,10 +80,10 @@ server <- function(input, output) {
                                         width = 300,
                                         multiple = FALSE
                             ),
-                            p(h6('A transformação Logit é utilizado como padrão no pacote metafor.')),
+                            p(h6('Logit transformation is used as standard in the metafor package.')),
                             
                             selectInput(inputId = 'ciprop',
-                                        label = 'Método de cálculo do intervalo de confiança',
+                                        label = 'Method of calculating the confidence interval',
                                         choices = c('exact binomial (Clopper-Pearson)'='CP',
                                                     'Wilson Score'='WS',
                                                     'Wilson Score interval with continuity correction'='WSCC',
@@ -92,37 +95,37 @@ server <- function(input, output) {
                                         width = 300,
                                         multiple = FALSE
                             ),
-                            p(h6('O método Clopper-Pearson é utilizado como padrão no pacote metafor.'))  
+                            p(h6('The Clopper-Pearson method is used as default in the metafor package.'))  
                           ),
                           
-                          conditionalPanel( # diferenca de medias
-                            condition = "input.modelo == 'df_med1'",
-                            p(h3('Configurações para modelo de diferença entre médias:')),
-                            selectInput(inputId = 'smmean',
-                                        label = 'Medidas do modelo de diferença entre médias',
-                                        choices = c('mean difference'='MD',
-                                                    'standardised mean difference'='SMD'),
-                                        selected = "MD",
-                                        width = 300,
-                                        multiple = FALSE
-                            ),
-                            p(h6('Não há medida utilizada como padrão no pacote metafor.'))
-                          ),
+                          # conditionalPanel( # diferenca de medias
+                          #   condition = "input.modelo == 'df_med1'",
+                          #   p(h3('Settings for mean differences model:')),
+                          #   selectInput(inputId = 'smmean',
+                          #               label = 'Mean differences measures',
+                          #               choices = c('mean difference'='MD',
+                          #                           'standardized mean difference'='SMD'),
+                          #               selected = "MD",
+                          #               width = 300,
+                          #               multiple = FALSE
+                          #   ),
+                          #   p(h6('There is no metric used as default in the metafor package.'))
+                          # ),
                           
                           conditionalPanel( # diferenca de media padronizada
                             condition = "input.modelo == 'df_medp'",
-                            p(h3('Configurações para modelo de diferença na média padronizada:')),
+                            p(h3('Settings for mean differences model:')),
                             selectInput(inputId = 'smmean',
-                                        label = 'Medidas do modelo de diferença entre médias',
+                                        label = 'Mean differences measures',
                                         choices = c('mean difference'='MD',
-                                                    'standardised mean difference'='SMD'),
+                                                    'standardized mean difference'='SMD'),
                                         selected = "MD",
                                         width = 300,
                                         multiple = FALSE
                             ),
-                            p(h6('Não há medida utilizada como padrão no pacote metafor.')),
+                            p(h6('There is no metric used as default in the metafor package.')),
                             selectInput(inputId = 'smdmean',
-                                        label = 'Método de cálculo da diferença na média padronizada',
+                                        label = 'Method of computing the difference for the standardized mean',
                                         choices = c('Hedges\' g (1981)'='Hedges',
                                                     'Cohen\'s d (1988)'='Cohen',
                                                     'Glass\' delta (1976)'='Glass'),
@@ -130,27 +133,27 @@ server <- function(input, output) {
                                         width = 300,
                                         multiple = FALSE
                             ),
-                            p(h6('O método de Hedges é utilizado como padrão no pacote metafor.'))
+                            p(h6('The Hedges method is used as default in the metafor package.'))
                           ),
                           
                           conditionalPanel( # Correlacao
                             condition = "input.modelo == 'df_corr'",
-                            p(h3('Configurações para modelo de correlação:')),
+                            p(h3('Settings for the correlation model:')),
                             selectInput(inputId = 'smcor',
-                                        label = 'Medidas do modelo de correlação',
+                                        label = 'Correlation measures',
                                         choices = c('Raw correlation coefficient'='COR',
                                                     'Fisher\'s z transformation of correlations'='ZCOR'),
                                         selected = "ZCOR",
                                         width = 300,
                                         multiple = FALSE
                             ),
-                            p(h6('A medida de Fisher é utilizado como padrão no pacote metafor.'))
+                            p(h6('The Fisher measure is used as default in the metafor package.'))
                           ),
                           
                           conditionalPanel( # Respostas dicotomicas
                             condition = "input.modelo == 'df_dich'",
-                            p(h3('Configurações para modelo dicotômico:')),
-                            selectInput("dichotomousoptions", strong("Seleção de medida"),
+                            p(h3('Settings for dichotomous model:')),
+                            selectInput("dichotomousoptions", strong("Dichotomous measures"),
                                         c("log relative risk" = "RR",
                                           "log odds ratio" = "OR",
                                           "risk difference" = "RD",
@@ -164,9 +167,9 @@ server <- function(input, output) {
                           )
                    ),
                    column(6,
-                          p(h3('Configurações Efeito Randômico:')),
+                          p(h3('Settings for random effect:')),
                           selectInput(inputId = 'measure',
-                                      label = 'Estimador do Modelo de Efeito Randômico',
+                                      label = 'Random Effect Model Estimator',
                                       choices = c('DerSimonian-Laird estimate (1986)' = 'DL',
                                                   'Restricted maximum-likelihood'='REML',
                                                   'Maximum-likelihood'='ML',
@@ -179,10 +182,10 @@ server <- function(input, output) {
                                       width = 300,
                                       multiple = FALSE
                           ),
-                          p(h6('DerSimonian-Laird é o estimador padrão do pacote metafor.')),
+                          p(h6('DerSimonian-Laird is the default estimator in the metafor package.')),
                           
                           checkboxInput("khadjust", label = "Knapp & Hartung Adjustment", value = FALSE),
-                          p(h6('O ajuste Knapp & Hartung como padrão não é utilizado no pacote metafor.'))
+                          p(h6('The Knapp & Hartung setting is not used as default in the metafor package.'))
                    )
                  )
         )
@@ -191,7 +194,7 @@ server <- function(input, output) {
   })
   output$results <- renderUI({
     tabBox(
-      title = "Resultados",
+      title = "Results",
       id = "tresults",
       width = 12,
       tabPanel("Forest Plot",

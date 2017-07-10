@@ -14,7 +14,7 @@ ui <- dashboardPage(skin = "yellow",
     sidebarMenu( id = "menu",
       menuItem("App", tabName = "app", icon = icon("home")),
       #menuItem("Configurações Avançadas", tabName = "config", icon = icon("dashboard")),
-      menuItem("Sobre", tabName = "about", icon = icon("glyphicon glyphicon-info-sign", lib= "glyphicon")),
+      #menuItem("About", tabName = "about", icon = icon("glyphicon glyphicon-info-sign", lib= "glyphicon")),
       #menuItem("Source code", icon = icon("file-code-o"),
                #href = "https://github.com")
       
@@ -25,37 +25,29 @@ ui <- dashboardPage(skin = "yellow",
           column(
             width = 12,
             box(
-              title = "Selecione abaixo",
-              width = 12,
-              background = "orange",
+              title = "Select below to begin", width = 12, background = "orange",
               selectInput(inputId = 'modelo',
-                          label = 'Medidas de efeito',
-                          choices = c('Proporção'='df_prop',
-                                      'Diferença entre médias'='df_medp',
-                                      'Correlação'='df_corr',
-                                      'Resposta dicotômica'='df_dich'
+                          label = 'Effect Size',
+                          choices = c('Proportion'='df_prop',
+                                      'Mean Differences'='df_medp',
+                                      'Correlation'='df_corr',
+                                      'Dichotomous Models'='df_dich'
                           ),
                           width = 200,
                           selected = NULL,
                           multiple = FALSE
               ),
-              numericInput(inputId = "alpha", label = "Nível de significância",
+              numericInput(inputId = "alpha", label = "Level of significance",
                            value = 0.05, min = 0.00, max = 1,
-                           width = 200, step = 0.01)
+                           width = 200, step = 0.01
+              )
             ),
             
-            box(width = 9,
-              actionButton("escolher_modelo", "Definir modelo"),
+            box(width = 10,
+              actionButton("escolher_modelo", "Define model"),
               background = "orange"
             )
-            
-            box(width = 12,
-              HTML("<p>Ricardo Manhães Savii (<a href = 'http://lattes.cnpq.br/7614391299549728'>lattes</a>),
-                    Alexandre, 
-                    Profa Dra. Camila Bertini Martins (<a href = 'http://lattes.cnpq.br/3770708843269785'>lattes</a>)</p>"),
-              HTML("<p></p>")
-            ),
-            
+
           )#end column
         )#end fluidrow
       )#end conditional
@@ -74,7 +66,7 @@ ui <- dashboardPage(skin = "yellow",
         ),
         fluidRow(
         )
-      ),
+      )
       
     # tab about
     #tabItem(tabName = "about",
