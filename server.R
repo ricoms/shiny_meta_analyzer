@@ -17,7 +17,8 @@ server <- function(input, output) {
                 <p>Ricardo Manhães Savii (<a href = 'http://lattes.cnpq.br/7614391299549728'>lattes</a>),</p>
                 <p>Alexandre Hild Aono (<a href = 'http://lattes.cnpq.br/5745062922235619'>lattes</a>), </p>
                 <p>Profa Dra. Camila Bertini Martins (<a href = 'http://lattes.cnpq.br/3770708843269785'>lattes</a>)</p><br>"),
-          HTML("<p>Select below the type of input to build your analysis.</p>")
+          HTML("<p>Select below the type of input to build your analysis, for any doubt or problem, please, reach us at</p>"),
+          HTML("<p><a href = 'https://groups.google.com/d/forum/meta-analyzer-unifesp'>meta-analyzer-unifesp.groups.google</a></p>")
           )
   })
   
