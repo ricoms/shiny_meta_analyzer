@@ -29,21 +29,41 @@ server <- function(input, output) {
         
         tabPanel("Manual Input",
                  fluidRow(
-                      column(3,
+                      column(6,
                         rHandsontableOutput("hot")
                       ),
-                      column(4,
+                      column(6,
                         HTML("<h4>Standard headers</h4>"),
                         HTML("<p><b>Studies</b>: identification of different studies to be compared.</p>"),
-                        HTML("<p><b>events</b>: number of positive events.</p>"),
-                        HTML("<p><b>n</b>: the total number of cases included.</p>"),
-                        HTML("<p><b>r</b>: correlation coefficient reported.</p>")
-                      ),
-                      column(5,
-                        HTML("<p><b>mean</b>: mean of group.</p>"),
-                        HTML("<p><b>sd</b>: standard deviation of group.</p>"),
-                        HTML("<p><b>#.e</b>: measure of experimental group.</p>"),
-                        HTML("<p><b>#.c</b>: measure of control group</p>")
+                        # prop
+                        conditionalPanel(
+                          condition = "input.modelo == 'df_prop'",
+                          HTML("<p><b>events</b>: number of positive events.</p>"),
+                          HTML("<p><b>n</b>: the total number of cases included.</p>")
+                        ),
+                        # medp
+                        conditionalPanel(
+                          condition = "input.modelo == 'df_medp'",
+                          HTML("<p><b>n</b>: the total number of cases included.</p>"),
+                          HTML("<p><b>mean</b>: mean of group.</p>"),
+                          HTML("<p><b>sd</b>: standard deviation of group.</p>"),
+                          HTML("<p><b>#.e</b>: measure of experimental group.</p>"),
+                          HTML("<p><b>#.c</b>: measure of control group</p>")
+                        ),
+                        # corr
+                        conditionalPanel(
+                          condition = "input.modelo == 'df_corr'",
+                          HTML("<p><b>n</b>: the total number of cases included.</p>"),
+                          HTML("<p><b>r</b>: correlation coefficient reported.</p>")
+                        ),
+                        # dich
+                        conditionalPanel(
+                          condition = "input.modelo == 'df_dich'",
+                          HTML("<p><b>event</b>: number of positive events.</p>"),
+                          HTML("<p><b>n</b>: the total number of cases included.</p>"),
+                          HTML("<p><b>#.e</b>: measure of experimental group.</p>"),
+                          HTML("<p><b>#.c</b>: measure of control group</p>")
+                        )
                       ),
                       column(12,
                         tags$hr(),
@@ -263,13 +283,9 @@ server <- function(input, output) {
     values$data <- read.table(inFile$datapath, header = header(), sep = sep(), quote = quote())
   })
   
-  # strmodelo será o espelho de input$modelo
-  strmodelo <- reactiveValues(data = "df_prop")
-  
   # permite a importação de um data.frame previamente criado
   observeEvent (input$escolher_modelo, {
     values$data <- get(input$modelo)
-    strmodelo$data <- input$modelo
   })
   
   # dados é a variável final que será levada até o plot

@@ -26,7 +26,7 @@ arg_meta = reactiveValues(
                   n.c = dados$data$n.c, mean.c = dados$data$mean.c, sd.c = dados$data$sd.c,
                   sm = input$smmean, method.smd = input$smdmean, method.tau = input$measure),
 
-  df_corr = list(cor = dados$data$r, n = dados$data$N,
+  df_corr = list(cor = dados$data$r, n = dados$data$n,
                   sm = input$smcor, method.tau = input$measure),
 
   df_dich = list(event.e = dados$data$event.e, n.e = dados$data$n.e,
