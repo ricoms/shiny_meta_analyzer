@@ -8,9 +8,13 @@ library(meta)
 
 source('data_examples_app.R', local=TRUE)
 
+
+
 server <- function(input, output) {
-  
+
+  ################################################
   #Abas sendo criadas
+  ################################################
   output$desc <- renderUI({
       box(title = "About", width = 12, solidHeader = TRUE, status = "primary",
           HTML("<h3>Authors</h3>
@@ -35,35 +39,7 @@ server <- function(input, output) {
                       column(6,
                         HTML("<h4>Standard headers</h4>"),
                         HTML("<p><b>Studies</b>: identification of different studies to be compared.</p>"),
-                        # prop
-                        conditionalPanel(
-                          condition = "input.modelo == 'df_prop'",
-                          HTML("<p><b>events</b>: number of positive events.</p>"),
-                          HTML("<p><b>n</b>: the total number of cases included.</p>")
-                        ),
-                        # medp
-                        conditionalPanel(
-                          condition = "input.modelo == 'df_medp'",
-                          HTML("<p><b>n</b>: the total number of cases included.</p>"),
-                          HTML("<p><b>mean</b>: mean of group.</p>"),
-                          HTML("<p><b>sd</b>: standard deviation of group.</p>"),
-                          HTML("<p><b>#.e</b>: measure of experimental group.</p>"),
-                          HTML("<p><b>#.c</b>: measure of control group</p>")
-                        ),
-                        # corr
-                        conditionalPanel(
-                          condition = "input.modelo == 'df_corr'",
-                          HTML("<p><b>n</b>: the total number of cases included.</p>"),
-                          HTML("<p><b>r</b>: correlation coefficient reported.</p>")
-                        ),
-                        # dich
-                        conditionalPanel(
-                          condition = "input.modelo == 'df_dich'",
-                          HTML("<p><b>event</b>: number of positive events.</p>"),
-                          HTML("<p><b>n</b>: the total number of cases included.</p>"),
-                          HTML("<p><b>#.e</b>: measure of experimental group.</p>"),
-                          HTML("<p><b>#.c</b>: measure of control group</p>")
-                        )
+                        HTML(gen_help_header())
                       ),
                       column(12,
                         tags$hr(),
@@ -252,7 +228,9 @@ server <- function(input, output) {
     )
   })
   
+  ################################################
   # definições feitas pelo usuário na aplicação
+  ################################################
   header <- reactive({
     input$header
   })
@@ -265,17 +243,21 @@ server <- function(input, output) {
   alpha <- reactive({
     input$alpha
   })
+
   
-  # values será o espelho da rHandsonTable no programa
+  ################################################
+  # React para conteúdo da tabela
+  ################################################
+  ## values será o espelho da rHandsonTable no programa
   values <- reactiveValues(data = df_prop)
   
-  # permite a edição direto na tabela rHandsonTable
+  ## permite a edição direto na tabela rHandsonTable
   observe ({
     if(!is.null(input$hot))
       values$data <- hot_to_r(input$hot)
   })
   
-  # permite a importação à partir de um arquivo
+  ## permite a importação à partir de um arquivo
   observeEvent (input$botao_arquivo, {
     inFile <- input$arquivo
     if (is.null(inFile))
@@ -283,12 +265,48 @@ server <- function(input, output) {
     values$data <- read.table(inFile$datapath, header = header(), sep = sep(), quote = quote())
   })
   
-  # permite a importação de um data.frame previamente criado
+  ## permite a importação de um data.frame previamente criado
   observeEvent (input$escolher_modelo, {
     values$data <- get(input$modelo)
   })
   
+  
+  ################################################
+  # React para texto explicativo dos cabeçalhos das tabelas
+  ################################################
+  helper_header <- reactiveValues(modelo = 'df_prop')
+  
+  observeEvent (input$escolher_modelo, {
+    helper_header$modelo <- input$modelo
+  })
+  
+  gen_help_header <- function() {
+    if (helper_header$modelo == 'df_prop'){
+      return("<p><b>events</b>: number of positive events.</p>
+        <p><b>n</b>: the total number of cases included.</p>")
+      
+    } else if (helper_header$modelo == 'df_medp'){
+      return("<p><b>n</b>: the total number of cases included.</p>
+       <p><b>mean</b>: mean of group.</p>
+       <p><b>sd</b>: standard deviation of group.</p>
+       <p><b>#.e</b>: measure of experimental group.</p>
+       <p><b>#.c</b>: measure of control group</p>")
+      
+    } else if (helper_header$modelo == 'df_corr'){
+      return("<p><b>n</b>: the total number of cases included.</p>
+       <p><b>r</b>: correlation coefficient reported.</p>")
+      
+    } else if (helper_header$modelo == 'df_dich'){
+      return("<p><b>event</b>: number of positive events.</p>
+       <p><b>n</b>: the total number of cases included.</p>
+       <p><b>#.e</b>: measure of experimental group.</p>
+       <p><b>#.c</b>: measure of control group</p>")
+    }
+  }
+  
+  ################################################
   # dados é a variável final que será levada até o plot
+  ################################################
   dados <- reactiveValues(data = df_prop)
   
   # dados só é atualizado quando botão plot (Submeter) é apertado
@@ -310,7 +328,7 @@ server <- function(input, output) {
       hot_table(highlightCol = TRUE, highlightRow = TRUE, allowRowEdit=TRUE) %>%
       hot_cols(columnSorting = TRUE, allowInvalid = TRUE)
   })
-  
+
   # Permite realizar o download da tabela visualizada
   output$downloadData <- downloadHandler(
     filename = function() { 
@@ -320,7 +338,7 @@ server <- function(input, output) {
       write.csv(values$data, file, row.names = FALSE)
     }
   )
-
+  
   ################################################
   # Cálculo do objeto meta
   ################################################

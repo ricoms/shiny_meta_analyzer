@@ -3,9 +3,9 @@ title: Shiny_meta_analyzer
 account: ricoms
 server: shinyapps.io
 appId: 195489
-bundleId: 903707
+bundleId: 908208
 url: https://ricoms.shinyapps.io/Shiny_meta_analyzer/
-when: 1500038443.12976
+when: 1500422555.79831
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: LICENSE.txt|README.md
