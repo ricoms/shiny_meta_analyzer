@@ -3,6 +3,8 @@ library(shiny)
 library(shinydashboard)
 library(rhandsontable)
 
+load("translation.bin") # contains the dictionary, parsed as a double list
+
 ui <- dashboardPage(skin = "yellow",
   # tags$head(includeScript("google-analytics.js")),
   ## cadastrar o endereço web na conta do google analytics,
@@ -11,6 +13,7 @@ ui <- dashboardPage(skin = "yellow",
   
   dashboardHeader(title = "Meta Analyzer"),
   dashboardSidebar(
+
     absolutePanel(width="230px", fixed=TRUE,
       sidebarMenu( id = "menu",
         menuItem("App", tabName = "app", icon = icon("home")),
@@ -19,31 +22,14 @@ ui <- dashboardPage(skin = "yellow",
         #menuItem("Source code", icon = icon("file-code-o"),
                  #href = "https://github.com")
         conditionalPanel(
+          
           condition = "input.menu == 'app'",
           below = "about",
           fluidRow(
             column(
               width = 12,
-              box(title = "Select below to begin", width = 12, background = "orange",
-                selectInput(inputId = 'modelo',
-                            label = 'Effect Size',
-                            choices = c('Proportion'='df_prop',
-                                        'Mean Differences'='df_medp',
-                                        'Correlation'='df_corr',
-                                        'Dichotomous Models'='df_dich'
-                            ),
-                            selected = NULL, multiple = FALSE
-                ),
-                numericInput(inputId = "alpha", label = "Level of significance",
-                             value = 0.05, min = 0.00, max = 1,
-                             step = 0.01
-                )
-              ),
-              
-              box(width = 10,
-                actionButton("escolher_modelo", "Define model"),
-                background = "orange"
-              )
+              uiOutput("test"),
+              radioButtons(inputId = "language", label="", choices = c("English" = "en", "Português" = "pt"), selected="en")
   
             )#end column
           )#end fluidrow

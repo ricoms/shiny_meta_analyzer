@@ -8,37 +8,81 @@ library(meta)
 
 source('data_examples_app.R', local=TRUE)
 
-
+load("translation.bin") # contains the dictionary, parsed as a double list
 
 server <- function(input, output) {
 
   ################################################
+  #Translation function
+  ################################################
+  tr <- function(text){ # translates text into current language
+    sapply(text,function(s) translation[[s]][[input$language]], USE.NAMES=FALSE)
+  }
+  
+  ################################################
+  #Dashboard
+  ################################################
+  output$test <- renderUI({
+    options <- c('df_prop','df_medp','df_corr','df_dich')
+    names(options) <- c(tr("Proportion"),tr("Mean Differences"),tr("Correlation"),tr("Dichotomous Models"))
+    
+    fluidRow(
+      column(width=12,
+             box(title = tr("Select below to begin"), width = 12, background = "orange",
+                 
+                 
+                 selectInput(inputId = 'modelo',
+                             label = tr('Effect Size'),
+                             choices = options,
+                             selected = NULL, multiple = FALSE
+                 ),
+                 numericInput(inputId = "alpha", label = tr("Level of significance"),
+                              value = 0.05, min = 0.00, max = 1,
+                              step = 0.01
+                 )
+             ),
+             
+             box(width = 10,
+                 actionButton("escolher_modelo", tr("Define model")),
+                 background = "orange"
+             )
+      )
+    )
+  })
+  
+  
+  ################################################
   #Abas sendo criadas
   ################################################
   output$desc <- renderUI({
-      box(title = "About", width = 12, solidHeader = TRUE, status = "primary",
-          HTML("<h3>Authors</h3>
-                <p>Ricardo Manhães Savii (<a href = 'http://lattes.cnpq.br/7614391299549728'>lattes</a>),</p>
-                <p>Alexandre Hild Aono (<a href = 'http://lattes.cnpq.br/5745062922235619'>lattes</a>), </p>
-                <p>Profa Dra. Camila Bertini Martins (<a href = 'http://lattes.cnpq.br/3770708843269785'>lattes</a>)</p><br>"),
-          HTML("<p>Select below the type of input to build your analysis, for any doubt or problem, please, reach us at</p>"),
+      box(title = tr("About"), width = 12, solidHeader = TRUE, status = "primary",
+          HTML(tr("<h3>Authors</h3>")),
+          HTML("<p>Ricardo Manhães Savii (<a href = 'http://lattes.cnpq.br/7614391299549728'>lattes</a>),</p>
+                <p>Alexandre Hild Aono (<a href = 'http://lattes.cnpq.br/5745062922235619'>lattes</a>), </p>"),
+          HTML(tr("<p>Professor Ph.D. Camila Bertini Martins (<a href = 'http://lattes.cnpq.br/3770708843269785'>lattes</a>)</p><br>")),
+          HTML(tr("<p>Select below the type of input to build your analysis, for any doubt or problem, please, reach us at</p>")),
           HTML("<p><a href = 'https://groups.google.com/d/forum/meta-analyzer-unifesp'>meta-analyzer-unifesp.groups.google</a></p>")
           )
   })
   
   output$painel <- renderUI({
+    separator <- c(",",";","\t")
+    names(separator) <- c(tr("comma"),tr("semicolon"),tr("tab"))
+    citation <- c("",'"',"'")
+    names(citation) <- c(tr("none"),tr('double quotes " "'),tr("single quotation marks ' '"))
+    
     if(input$escolher_modelo){
       tabBox(
-        title = "Input and Configuration", id = "ttabs", width = 12,
+        title = tr("Input and Configuration"), id = "ttabs", width = 12,
         
-        tabPanel("Manual Input",
+        tabPanel(tr("Manual Input"),
                  fluidRow(
                       column(6,
                         rHandsontableOutput("hot")
                       ),
                       column(6,
-                        HTML("<h4>Standard headers</h4>"),
-                        HTML("<p><b>Studies</b>: identification of different studies to be compared.</p>"),
+                        HTML(tr("<h4>Standard headers</h4>")),
+                        HTML(tr("<p><b>Studies</b>: identification of different studies to be compared.</p>")),
                         HTML(gen_help_header())
                       ),
                       column(12,
@@ -46,44 +90,44 @@ server <- function(input, output) {
                         tags$head(
                           tags$style(HTML('#plot{background-color:orange}'))
                         ),
-                        actionButton("plot", "Generate results", width = "150px"),
-                        downloadButton('downloadData', 'Save Data')
+                        actionButton("plot", tr("Generate results"), width = "150px"),
+                        downloadButton('downloadData', tr("Save Data"))
                       ),
                       tags$br() 
                     )#endfluidrow
         ),#endtabpanel
         
-        tabPanel("Import File",
+        tabPanel(tr("Import File"),
                  fluidRow(
                    column(4,
-                     checkboxInput(inputId = "header", label = "Header", TRUE),
-                     radioButtons(inputId = "sep", label = "Separator",
-                                  choices = c('comma ,'=',', 'semicolon ;'=';','tab'='\t'), selected = ","),
-                     radioButtons(inputId = "quote", label = "Citation",
-                                  choices = c('none'='', 'double quotes " "'='"',"single quotation marks ' '"="'"),selected = '"')
+                     checkboxInput(inputId = "header", label = tr("Header"), TRUE),
+                     radioButtons(inputId = "sep", label = tr("Separator"),
+                                  choices = separator,selected = ","),
+                     radioButtons(inputId = "quote", label = tr("Citation"),
+                                  choices = citation, selected = '"')
                    ),
                    column(8,
-                     fileInput("arquivo", "Choose .csv or .txt file",
+                     fileInput("arquivo", tr("Choose .csv or .txt file"),
                                accept=c('text/csv','text/comma-separated-values',
                                         'text/tab-separated-values','text/plain','.csv','.tsv','.txt')),
-                     actionButton("botao_arquivo", "Import file"),
+                     actionButton("botao_arquivo", tr("Import file")),
                      tags$hr(),
-                     tags$p("Write your input into a .csv or .txt file following the template for the chosen Effect Size."),
-                     tags$p("The template is the column headers visible at Manual Input tab. Each line in your file will be considered as a multivariate."),
-                     tags$p("After a successful import your data should be visible in the table atManual input tab.")
+                     tags$p(tr("Write your input into a .csv or .txt file following the template for the chosen Effect Size.")),
+                     tags$p(tr("The template is the column headers visible at Manual Input tab. Each line in your file will be considered as a multivariate.")),
+                     tags$p(tr("After a successful import your data should be visible in the table atManual input tab."))
                    )
                    
                  )#endfluidrow
         ),#endtabpanel
         
-        tabPanel("Advanced settings",
+        tabPanel(tr("Advanced settings"),
                  fluidRow(
                    column(6,
                           conditionalPanel(
                             condition = "input.modelo == 'df_prop'",
-                            p(h3('Settings for proportion model:')),
+                            p(h3(tr("Settings for proportion model:"))),
                             selectInput(inputId = 'smprop',
-                                        label = 'Proportion model measures',
+                                        label = tr('Proportion model measures'),
                                         choices = c('Logit'='PLOGIT',
                                                     'Log'='PLN',
                                                     'Freeman-Tukey Double arcsine'='PFT',
@@ -93,10 +137,10 @@ server <- function(input, output) {
                                         width = 300,
                                         multiple = FALSE
                             ),
-                            p(h6('Logit transformation is used as standard in the metafor package.')),
+                            p(h6(tr("Logit transformation is used as standard in the metafor package."))),
                             
                             selectInput(inputId = 'ciprop',
-                                        label = 'Method of calculating the confidence interval',
+                                        label = tr("Method of calculating the confidence interval"),
                                         choices = c('exact binomial (Clopper-Pearson)'='CP',
                                                     'Wilson Score'='WS',
                                                     'Wilson Score interval with continuity correction'='WSCC',
@@ -108,7 +152,7 @@ server <- function(input, output) {
                                         width = 300,
                                         multiple = FALSE
                             ),
-                            p(h6('The Clopper-Pearson method is used as default in the metafor package.'))  
+                            p(h6(tr("The Clopper-Pearson method is used as default in the metafor package.")))  
                           ),
                           
                           # conditionalPanel( # diferenca de medias
@@ -127,39 +171,39 @@ server <- function(input, output) {
                           
                           conditionalPanel( # diferenca de media padronizada
                             condition = "input.modelo == 'df_medp'",
-                            p(h3('Settings for mean differences model:')),
+                            p(h3(tr("Settings for mean differences model:"))),
                             selectInput(inputId = 'smmean',
                                         label = 'Mean differences measures',
                                         choices = c('mean difference'='MD',
                                                     'standardized mean difference'='SMD'),
                                         selected = "MD", width = 300, multiple = FALSE
                             ),
-                            p(h6('There is no metric used as default in the metafor package.')),
+                            p(h6(tr("There is no metric used as default in the metafor package."))),
                             selectInput(inputId = 'smdmean',
-                                        label = 'Method of computing the difference for the standardized mean',
+                                        label = tr('Method of computing the difference for the standardized mean'),
                                         choices = c('Hedges\' g (1981)'='Hedges',
                                                     'Cohen\'s d (1988)'='Cohen',
                                                     'Glass\' delta (1976)'='Glass'),
                                         selected = "Hedges", width = 300, multiple = FALSE
                             ),
-                            p(h6('The Hedges method is used as default in the metafor package.'))
+                            p(h6(tr("The Hedges method is used as default in the metafor package.")))
                           ),
                           
                           conditionalPanel( # Correlacao
                             condition = "input.modelo == 'df_corr'",
-                            p(h3('Settings for the correlation model:')),
+                            p(h3(tr("Settings for the correlation model:"))),
                             selectInput(inputId = 'smcor',
-                                        label = 'Correlation measures',
+                                        label = tr("Correlation measures"),
                                         choices = c('Raw correlation coefficient'='COR',
                                                     'Fisher\'s z transformation of correlations'='ZCOR'),
                                         selected = "ZCOR", width = 300, multiple = FALSE
                             ),
-                            p(h6('The Fisher measure is used as default in the metafor package.'))
+                            p(h6(tr("The Fisher measure is used as default in the metafor package.")))
                           ),
                           
                           conditionalPanel( # Respostas dicotomicas
                             condition = "input.modelo == 'df_dich'",
-                            p(h3('Settings for dichotomous model:')),
+                            p(h3(tr("Settings for dichotomous model:"))),
                             selectInput("dichotomousoptions", strong("Dichotomous measures"),
                                         c("log relative risk" = "RR",
                                           "log odds ratio" = "OR",
@@ -170,13 +214,13 @@ server <- function(input, output) {
                                           "transformed odds ratio as an estimate of the standardized mean difference (normal distributions)." = "OR2DN",
                                           "transformed odds ratio as an estimate of the standardized mean difference (logistic distributions)." = "OR2DL"
                                         ), selected = "OR"),
-                            p(h6('logs odds ratio is the default option and is the one you should use for the example provided in the Input Examples tab.'))
+                            p(h6(tr("logs odds ratio is the default option and is the one you should use for the example provided in the Input Examples tab.")))
                           )
                    ),
                    column(6,
-                          p(h3('Settings for random effect:')),
+                          p(h3(tr("Settings for random effect:"))),
                           selectInput(inputId = 'measure',
-                                      label = 'Random Effect Model Estimator',
+                                      label = tr("Random Effect Model Estimator"),
                                       choices = c('DerSimonian-Laird estimate (1986)' = 'DL',
                                                   'Restricted maximum-likelihood'='REML',
                                                   'Maximum-likelihood'='ML',
@@ -187,10 +231,10 @@ server <- function(input, output) {
                                                   'Paule-Mandel method (1982)'='PM'),
                                       selected = "DL", width = 300, multiple = FALSE
                           ),
-                          p(h6('DerSimonian-Laird is the default estimator in the metafor package.')),
+                          p(h6(tr("DerSimonian-Laird is the default estimator in the metafor package."))),
                           
                           checkboxInput("khadjust", label = "Knapp & Hartung Adjustment", value = FALSE),
-                          p(h6('The Knapp & Hartung setting is not used as default in the metafor package.'))
+                          p(h6(tr("The Knapp & Hartung setting is not used as default in the metafor package.")))
                    )
                  )
         )
@@ -199,19 +243,19 @@ server <- function(input, output) {
   })
   output$results <- renderUI({
     tabBox(
-      title = "Results",
+      title = tr("Results"),
       id = "results",
       width = 12,
-      tabPanel("Forest Plot",
+      tabPanel(tr("Forest Plot"),
                wellPanel(
                  plotOutput("forest", height = 400, width = 800),
-                 downloadButton('downloadForest', 'Save forest as pdf')
+                 downloadButton('downloadForest', tr("Save forest as pdf"))
                )
       ),
-      tabPanel("Funnel Plot",
+      tabPanel(tr("Funnel Plot"),
                wellPanel(
                  plotOutput("funnel", height = 400, width = 600),
-                 downloadButton('downloadFunnel', 'Salvar funnel como pdf')
+                 downloadButton('downloadFunnel', tr("Save funnel as pdf"))
                )
       )
       # tabPanel("Teste de assimetria",
@@ -282,25 +326,25 @@ server <- function(input, output) {
   
   gen_help_header <- function() {
     if (helper_header$modelo == 'df_prop'){
-      return("<p><b>events</b>: number of positive events.</p>
-        <p><b>n</b>: the total number of cases included.</p>")
+      return(cbind(tr("<p><b>events</b>: number of positive events.</p>"),
+        tr("<p><b>n</b>: the total number of cases included.</p>")))
       
     } else if (helper_header$modelo == 'df_medp'){
-      return("<p><b>n</b>: the total number of cases included.</p>
-       <p><b>mean</b>: mean of group.</p>
-       <p><b>sd</b>: standard deviation of group.</p>
-       <p><b>#.e</b>: measure of experimental group.</p>
-       <p><b>#.c</b>: measure of control group</p>")
+      return(cbind(tr("<p><b>n</b>: the total number of cases included.</p>"),
+       tr("<p><b>mean</b>: mean of group.</p>"),
+       tr("<p><b>sd</b>: standard deviation of group.</p>"),
+       tr("<p><b>#.e</b>: measure of experimental group.</p>"),
+       tr("<p><b>#.c</b>: measure of control group</p>")))
       
     } else if (helper_header$modelo == 'df_corr'){
-      return("<p><b>n</b>: the total number of cases included.</p>
-       <p><b>r</b>: correlation coefficient reported.</p>")
+      return(cbind(tr("<p><b>n</b>: the total number of cases included.</p>"),
+       tr("<p><b>r</b>: correlation coefficient reported.</p>")))
       
     } else if (helper_header$modelo == 'df_dich'){
-      return("<p><b>event</b>: number of positive events.</p>
-       <p><b>n</b>: the total number of cases included.</p>
-       <p><b>#.e</b>: measure of experimental group.</p>
-       <p><b>#.c</b>: measure of control group</p>")
+      return(cbind(tr("<p><b>event</b>: number of positive events.</p>"),
+       tr("<p><b>n</b>: the total number of cases included.</p>"),
+       tr("<p><b>#.e</b>: measure of experimental group.</p>"),
+       tr("<p><b>#.c</b>: measure of control group</p>")))
     }
   }
   

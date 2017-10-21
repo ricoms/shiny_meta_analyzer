@@ -1,0 +1,67 @@
+key	en	pt
+<p><b>events</b>: number of positive events.</p>	<p><b>events</b>: number of positive events.</p>	<p><b>eventos</b>: número de eventos positivos.</p>
+<p><b>n</b>: the total number of cases included.</p>	<p><b>n</b>: the total number of cases included.</p>	<p><b>n</b>: número total de casos incluídos.</p>
+<p><b>mean</b>: mean of group.</p>	<p><b>mean</b>: mean of group.</p>	<p><b>mean</b>: média do grupo.</p>
+<p><b>sd</b>: standard deviation of group.</p>	<p><b>sd</b>: standard deviation of group.</p>	<p><b>sd</b>: desvio padrão do grupo.</p>
+<p><b>#.e</b>: measure of experimental group.</p>	<p><b>#.e</b>: measure of experimental group.</p>	<p><b>#.e</b>: medida do grupo experimental.</p>
+<p><b>r</b>: correlation coefficient reported.</p>	<p><b>r</b>: correlation coefficient reported.</p>	<p><b>r</b>: coeficiente de correlação reportado.</p>
+<p><b>event</b>: number of positive events.</p>	<p><b>event</b>: number of positive events.</p>	<p><b>event</b>: número de eventos positivos.</p>
+<p><b>#.e</b>: measure of experimental group.</p>	<p><b>#.e</b>: measure of experimental group.</p>	<p><b>#.e</b>: measure of experimental group.</p>
+<p><b>#.c</b>: measure of control group</p>	<p><b>#.c</b>: measure of control group</p>	<p><b>#.c</b>: medida do grupo de controle</p>
+About	About	Sobre
+<h3>Authors</h3>	<h3>Authors</h3>	<h3>Autores</h3>
+<p>Professor Ph.D. Camila Bertini Martins (<a href = 'http://lattes.cnpq.br/3770708843269785'>lattes</a>)</p><br>	<p>Professor Ph.D. Camila Bertini Martins (<a href = 'http://lattes.cnpq.br/3770708843269785'>lattes</a>)</p><br>	<p>Profa. Dra. Camila Bertini Martins (<a href = 'http://lattes.cnpq.br/3770708843269785'>lattes</a>)</p><br>
+<p>Select below the type of input to build your analysis, for any doubt or problem, please, reach us at</p>	<p>Select below the type of input to build your analysis, for any doubt or problem, please, reach us at</p>	<p>Selecione abaixo o tipo de entrada para realizar as análises; em caso de dúvidas ou problemas, entre em contato em:</p>
+Input and Configuration	Input and Configuration	Entrada e Configuração
+Manual Input	Manual Input	Entrada Manual
+<h4>Standard headers</h4>	<h4>Standard headers</h4>	<h4>Cabeçalho padrão</h4>
+<p><b>Studies</b>: identification of different studies to be compared.</p>	<p><b>Studies</b>: identification of different studies to be compared.</p>	<p><b>Estudos</b>: identificação de diferentes estudos a serem comparados.</p>
+Generate results	Generate results	Gerar Resultados
+Save Data	Save Data	Salvar Dados
+Import File	Import File	Importar Arquivos
+Header	Header	Cabeçalho
+Separator	Separator	Separador
+comma	comma	vírgula
+semicolon	semicolon	ponto e vírgula
+tab	tab	tabulação
+Citation	Citation	Citação
+none	none	nenhuma
+"double quotes "" """	"double quotes "" """	"aspas duplas "" """
+single quotation marks ' '	single quotation marks ' '	aspas simples ' '
+Choose .csv or .txt file	Choose .csv or .txt file	Escolha um arquivo no formato .csv ou .txt
+Import file	Import file	Importar arquivo
+Write your input into a .csv or .txt file following the template for the chosen Effect Size.	Write your input into a .csv or .txt file following the template for the chosen Effect Size.	Escreva sua entrada em um arquivo .csv ou .txt seguindo o modelo do Tamanho de Efeito escolhido.
+The template is the column headers visible at Manual Input tab. Each line in your file will be considered as a multivariate.	The template is the column headers visible at Manual Input tab. Each line in your file will be considered as a multivariate.	O modelo é baseado nas linhas de cabeçalho visíveis na aba Entrada Manual. Cada linha do arquivo será considerada como multivariada.
+After a successful import your data should be visible in the table atManual input tab.	After a successful import your data should be visible in the table atManual input tab.	Depois de uma importação bem sucedida, seus dados ficarão visíveis na tabela da aba de Entrada Manual.
+Advanced settings	Advanced settings	Configurações Avançadas
+Settings for proportion model:	Settings for proportion model:	Configurações para o modelo de proporção:
+Proportion model measures	Proportion model measures	Medidas do modelo de proporção
+Logit transformation is used as standard in the metafor package.	Logit transformation is used as standard in the metafor package.	Transformação logit é usada como padrão no pacote metafor.
+Method of calculating the confidence interval	Method of calculating the confidence interval	Método para calcular o intervalo de confiança
+The Clopper-Pearson method is used as default in the metafor package.	The Clopper-Pearson method is used as default in the metafor package.	O método de Clopper-Pearson é usado como padrão no pacote metafor.
+Settings for mean differences model:	Settings for mean differences model:	Configurações para o modelo de diferenças de médias:
+There is no metric used as default in the metafor package.	There is no metric used as default in the metafor package.	Não há métrica usada como padrão no pacote metafor.
+Method of computing the difference for the standardized mean	Method of computing the difference for the standardized mean	Método para computar a diferença para média normalizada
+The Hedges method is used as default in the metafor package.	The Hedges method is used as default in the metafor package.	O método de Hedges é usado como padrão no pacote metafor.
+Settings for the correlation model:	Settings for the correlation model:	Configurações para o modelo de correlação:
+Correlation measures	Correlation measures	Medidas de correlação
+The Fisher measure is used as default in the metafor package.	The Fisher measure is used as default in the metafor package.	A medida de Fisher é usada como padrão no pacote metafor.
+Settings for dichotomous model:	Settings for dichotomous model:	Configurações para o modelo dicotômico:
+logs odds ratio is the default option and is the one you should use for the example provided in the Input Examples tab.	logs odds ratio is the default option and is the one you should use for the example provided in the Input Examples tab.	Logaritmo da razão de chances é a opção padrão e é a medida que deve ser utilizada no exemplo fornecido na aba de Entrada de Exemplo.
+Settings for random effect:	Settings for random effect:	Configuração para o efeito aleatório:
+Random Effect Model Estimator	Random Effect Model Estimator	Estimador do Modelo de Efeito Aleatório
+DerSimonian-Laird is the default estimator in the metafor package.	DerSimonian-Laird is the default estimator in the metafor package.	DerSimonian-Laird é o estimador padrão do pacote metafor.
+The Knapp & Hartung setting is not used as default in the metafor package.	The Knapp & Hartung setting is not used as default in the metafor package.	A configuração Knapp & Hartung não é usada como padrão no pacote metafor.
+Forest Plot	Forest Plot	Gráfico de Floresta
+Funnel Plot	Funnel Plot	Gráfico de Funil
+Results	Results	Resultados
+Save forest as pdf	Save forest as pdf	Salvar floresta como pdf
+Save funnel as pdf	Save funnel as pdf	Salvar funil como pdf
+Select below to begin	Select below to begin	Selecione abaixo
+Effect Size	Effect Size	Tamanho do efeito
+Level of significance	Level of significance	Nível de significância
+Define model	Define model	Definir modelo
+Proportion	Proportion	Proporção
+Mean Differences	Mean Differences	Diferenças de médias
+Correlation	Correlation	Correlação
+Dichotomous Models	Dichotomous Models	Modelos Dicotômicos
