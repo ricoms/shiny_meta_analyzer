@@ -71,7 +71,7 @@ server <- function(input, output) {
     citation <- c("",'"',"'")
     names(citation) <- c(tr("none"),tr('double quotes " "'),tr("single quotation marks ' '"))
     
-    if(input$escolher_modelo){
+    if(TRUE){
       tabBox(
         title = tr("Input and Configuration"), id = "ttabs", width = 12,
         

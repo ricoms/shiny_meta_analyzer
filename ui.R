@@ -22,7 +22,7 @@ ui <- dashboardPage(skin = "yellow",
         #menuItem("Source code", icon = icon("file-code-o"),
                  #href = "https://github.com")
         conditionalPanel(
-          
+
           condition = "input.menu == 'app'",
           below = "about",
           fluidRow(
@@ -45,9 +45,10 @@ ui <- dashboardPage(skin = "yellow",
         tabName = "app",
         uiOutput("desc"),
         uiOutput("painel"),
-        conditionalPanel("input.plot == true",
-          uiOutput("results")
-        ),
+        uiOutput("results"),
+        #conditionalPanel("input.plot == true",
+          #uiOutput("results")
+        #),
         fluidRow(
         )
       )
