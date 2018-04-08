@@ -1,4 +1,6 @@
 key	en	pt
+Random	Random	Aleatório
+Fixed	Fixed	Fixo
 <p><b>events</b>: number of positive events.</p>	<p><b>events</b>: number of positive events.</p>	<p><b>eventos</b>: número de eventos positivos.</p>
 <p><b>n</b>: the total number of cases included.</p>	<p><b>n</b>: the total number of cases included.</p>	<p><b>n</b>: número total de casos incluídos.</p>
 <p><b>mean</b>: mean of group.</p>	<p><b>mean</b>: mean of group.</p>	<p><b>mean</b>: média do grupo.</p>
@@ -57,7 +59,7 @@ Funnel Plot	Funnel Plot	Gráfico de Funil
 Results	Results	Resultados
 Save forest as pdf	Save forest as pdf	Salvar floresta como pdf
 Save funnel as pdf	Save funnel as pdf	Salvar funil como pdf
-Select below to begin	Select below to begin	Selecione abaixo
+Model configuration	Model configuration	Configuração do modelo
 Effect Size	Effect Size	Tamanho do efeito
 Level of significance	Level of significance	Nível de significância
 Define model	Define model	Definir modelo

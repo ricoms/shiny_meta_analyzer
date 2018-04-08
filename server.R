@@ -28,7 +28,7 @@ server <- function(input, output) {
     
     fluidRow(
       column(width=12,
-             box(title = tr("Select below to begin"), width = 12, background = "orange",
+             box(title = tr("Model configuration"), width = 12, background = "orange",
                  
                  
                  selectInput(inputId = 'modelo',
@@ -39,7 +39,11 @@ server <- function(input, output) {
                  numericInput(inputId = "alpha", label = tr("Level of significance"),
                               value = 0.05, min = 0.00, max = 1,
                               step = 0.01
-                 )
+                 ),
+                 
+                 checkboxInput(inputId = "random_comb", label = tr("Random"), TRUE),
+                 checkboxInput(inputId = "fixed_comb", label = tr("Fixed"), TRUE)
+                 
              ),
              
              box(width = 10,
@@ -401,13 +405,9 @@ server <- function(input, output) {
   plotForest <- function(){
     meta <- meta()
      if (!is.null(meta)) {
-       if (1-pchisq(meta$Q, meta$df.Q) > alpha()) { # if p-value > alpha só apresenta fixed effect model
-         forest(meta, studlab = paste(dados$data$Studies),
-                comb.random=FALSE, comb.fixed=TRUE)
-       } else {
-         forest(meta, studlab = paste(dados$data$Studies),
-                comb.random=TRUE, comb.fixed=FALSE)
-       }
+       forest(meta, studlab = paste(dados$data$Studies),
+              comb.random=input$random_comb,
+              comb.fixed=input$fixed_comb)
      } else {
        frame()
      }
@@ -432,18 +432,29 @@ server <- function(input, output) {
   ################################################
   plotFunnel <- function(){
     meta <- meta()
-     if (!is.null(meta)) {
-       if (1-pchisq(meta$Q, meta$df.Q) > alpha()) { # if p-value > alpha só apresenta fixed effect model
-         funnel.meta(meta, studlab = paste(dados$data$Studies),
-                comb.random=FALSE, comb.fixed=TRUE)
-       } else {
-         funnel.meta(meta, studlab = paste(dados$data$Studies),
-                comb.random=TRUE, comb.fixed=FALSE)
-       }
-     } else {
-       frame()
-     }
+    if (!is.null(meta)) {
+      funnel.meta(meta, studlab = paste(dados$data$Studies),
+                  comb.random=input$random_comb,
+                  comb.fixed=input$fixed_comb)
+    } else {
+      frame()
+    }
   }
+  # Deprecated: above is correct now
+  # plotFunnel <- function(){
+  #   meta <- meta()
+  #    if (!is.null(meta)) {
+  #      if (1-pchisq(meta$Q, meta$df.Q) > alpha()) { # if p-value > alpha só apresenta fixed effect model
+  #        funnel.meta(meta, studlab = paste(dados$data$Studies),
+  #               comb.random=FALSE, comb.fixed=TRUE)
+  #      } else {
+  #        funnel.meta(meta, studlab = paste(dados$data$Studies),
+  #               comb.random=TRUE, comb.fixed=FALSE)
+  #      }
+  #    } else {
+  #      frame()
+  #    }
+  # }
   output$funnel <- renderPlot ({
     plotFunnel()
   })
