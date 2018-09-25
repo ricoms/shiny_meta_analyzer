@@ -261,12 +261,12 @@ server <- function(input, output) {
                  plotOutput("funnel", height = 400, width = 600),
                  downloadButton('downloadFunnel', tr("Save funnel as pdf"))
                )
-      )
+      ),
       tabPanel("Teste de assimetria",
                wellPanel(
                  verbatimTextOutput("beggTest")
                )
-      )
+      ),
       tabPanel("Boot Density",
                wellPanel(
                  plotOutput("dens"),
@@ -483,16 +483,16 @@ server <- function(input, output) {
   # ################################################
   # # Teste de assimetria egger
   # ################################################
-  output$eggerTest <- renderPrint ({
-    meta <- meta()
-     if (!is.null(meta)) {
-       return(list(metabias(meta, k.min=3),
-                   cor.test()
-                   ))
-     } else {
-       frame()
-     }
-  })
+  # output$eggerTest <- renderPrint ({
+  #   meta <- meta()
+  #    if (!is.null(meta)) {
+  #      return(list(metabias(meta, k.min=3),
+  #                  cor.test()
+  #                  ))
+  #    } else {
+  #      frame()
+  #    }
+  # })
   
   ################################################
   # Teste de assimetria begg
