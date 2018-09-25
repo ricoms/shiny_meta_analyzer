@@ -266,13 +266,13 @@ server <- function(input, output) {
                wellPanel(
                  verbatimTextOutput("beggTest")
                )
-      ),
-      tabPanel("Boot Density",
-               wellPanel(
-                 plotOutput("dens"),
-                 downloadButton('downloadDensity', 'Save plot as pdf')
-               )
       )
+      #tabPanel("Boot Density",
+      #         wellPanel(
+      #           plotOutput("dens"),
+      #           downloadButton('downloadDensity', 'Save plot as pdf')
+      #         )
+      #)
     )
   })
   
@@ -433,7 +433,7 @@ server <- function(input, output) {
   plotFunnel <- function(){
     meta <- meta()
     if (!is.null(meta)) {
-      if (!input$random_comb and !input$fixed_comb) {
+      if (input$random_comb == TRUE && !input$fixed_comb == TRUE) {
         funnel.meta(meta, studlab = paste(dados$data$Studies),
                     comb.random=input$random_comb,
                     comb.fixed=input$fixed_comb)
@@ -483,16 +483,16 @@ server <- function(input, output) {
   # ################################################
   # # Teste de assimetria egger
   # ################################################
-  # output$eggerTest <- renderPrint ({
-  #   meta <- meta()
-  #    if (!is.null(meta)) {
-  #      return(list(metabias(meta, k.min=3),
-  #                  cor.test()
-  #                  ))
-  #    } else {
-  #      frame()
-  #    }
-  # })
+  #output$eggerTest <- renderPrint ({
+  #  meta <- meta()
+  #   if (!is.null(meta)) {
+  #     return(list(metabias(meta, k.min=3),
+  #                 cor.test()
+  #                 ))
+  #   } else {
+  #     frame()
+  #   }
+  #})
   
   ################################################
   # Teste de assimetria begg
