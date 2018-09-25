@@ -262,17 +262,17 @@ server <- function(input, output) {
                  downloadButton('downloadFunnel', tr("Save funnel as pdf"))
                )
       )
-      # tabPanel("Teste de assimetria",
-      #          wellPanel(
-      #            verbatimTextOutput("beggTest")
-      #          )
-      # )
-      # tabPanel("Boot Density",
-      #          wellPanel(
-      #            plotOutput("dens"),
-      #            downloadButton('downloadDensity', 'Save plot as pdf')
-      #          )
-      # )
+      tabPanel("Teste de assimetria",
+               wellPanel(
+                 verbatimTextOutput("beggTest")
+               )
+      )
+      tabPanel("Boot Density",
+               wellPanel(
+                 plotOutput("dens"),
+                 downloadButton('downloadDensity', 'Save plot as pdf')
+               )
+      )
     )
   })
   
@@ -433,9 +433,19 @@ server <- function(input, output) {
   plotFunnel <- function(){
     meta <- meta()
     if (!is.null(meta)) {
-      funnel.meta(meta, studlab = paste(dados$data$Studies),
-                  comb.random=input$random_comb,
-                  comb.fixed=input$fixed_comb)
+      if (!input$random_comb and !input$fixed_comb) {
+        funnel.meta(meta, studlab = paste(dados$data$Studies),
+                    comb.random=input$random_comb,
+                    comb.fixed=input$fixed_comb)
+      } else {
+        if (1-pchisq(meta$Q, meta$df.Q) > alpha()) { # if p-value > alpha só apresenta fixed effect model
+          funnel.meta(meta, studlab = paste(dados$data$Studies),
+                  comb.random=FALSE, comb.fixed=TRUE)
+        } else {
+          funnel.meta(meta, studlab = paste(dados$data$Studies),
+                  comb.random=TRUE, comb.fixed=FALSE)
+        }
+      }
     } else {
       frame()
     }
@@ -473,16 +483,16 @@ server <- function(input, output) {
   # ################################################
   # # Teste de assimetria egger
   # ################################################
-  # output$eggerTest <- renderPrint ({
-  #   meta <- meta()
-  #    if (!is.null(meta)) {
-  #      return(list(metabias(meta, k.min=3),
-  #                  cor.test()
-  #                  ))
-  #    } else {
-  #      frame()
-  #    }
-  # })
+  output$eggerTest <- renderPrint ({
+    meta <- meta()
+     if (!is.null(meta)) {
+       return(list(metabias(meta, k.min=3),
+                   cor.test()
+                   ))
+     } else {
+       frame()
+     }
+  })
   
   ################################################
   # Teste de assimetria begg
