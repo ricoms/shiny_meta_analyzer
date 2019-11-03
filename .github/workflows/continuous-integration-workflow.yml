@@ -1,0 +1,12 @@
+name: Digital Ocean Shiny simple Deploy
+# This workflow is triggered on pushes to the repository.
+on: [push]
+
+jobs:
+  build:
+    name: build
+
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Echo the greeting's time
+        run: ssh deploy@45.55.133.72 'cd /srv/shiny-server/Shiny_meta_analyzer/; git checkout master; git pull;'
