@@ -1,0 +1,1 @@
+cd /srv/shiny-server/Shiny_meta_analyzer/; git checkout master; git pull;

@@ -9,9 +9,13 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - name: ssh to server and pull github repo
+        uses: appleboy/ssh-action@master
         env:
-          DEPLOY_KEY: ${{ secrets.SSH_KEY }}
-        run: |
-          echo -e "$DEPLOY_KEY" > deployment_key.txt
-          chmod 600 deployment_key.txt
-          ssh -i deployment_key.txt root@${{ secrets.SERVER }} 'cd /srv/shiny-server/Shiny_meta_analyzer/; git checkout master; git pull;'
+          USERNAME: root
+          HOST: {{ secrets.SERVER }}
+          SCRIPT: scripts/deplyment.sh
+          KEY: ${{ secrets.SSH_KEY }}
+        # run: |
+        #   echo -e "$DEPLOY_KEY" > deployment_key.txt
+        #   chmod 600 deployment_key.txt
+        #   ssh -i deployment_key.txt root@${{ secrets.SERVER }} 'cd /srv/shiny-server/Shiny_meta_analyzer/; git checkout master; git pull;'
