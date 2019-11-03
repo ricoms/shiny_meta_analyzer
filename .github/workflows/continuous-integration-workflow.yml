@@ -10,7 +10,6 @@ jobs:
     steps:
       - name: ssh to server and pull github repo
         run: |
-          touch deployment.txt
           echo $SERVER
           echo $SSH_KEY > deployment.txt
           chmod 600 deployment_key.txt
