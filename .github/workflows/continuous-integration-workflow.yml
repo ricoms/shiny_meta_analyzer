@@ -12,5 +12,5 @@ jobs:
       with:
         username: root
         host: ${{ secrets.SERVER }}
-        script: scripts/deplyment.sh
+        script: scripts/deployment.sh
         key: ${{ secrets.SSH_KEY }}
