@@ -1,16 +1,15 @@
 name: Digital Ocean Shiny simple Deploy
-# This workflow is triggered on pushes to the repository.
+
 on: [push]
 
 jobs:
   build:
     name: build
-
     runs-on: ubuntu-18.04
     steps:
       - name: ssh to server and pull github repo
         uses: appleboy/ssh-action@master
-        env:
+        with:
           USERNAME: root
           HOST: {{ secrets.SERVER }}
           SCRIPT: scripts/deplyment.sh
