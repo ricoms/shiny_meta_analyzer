@@ -10,7 +10,6 @@ jobs:
     steps:
       - name: ssh to server and pull github repo
         run: |
-          echo ${{ secrets.SERVER }}
           echo ${{ secrets.SSH_KEY }} > deployment_key.txt
           chmod 600 deployment_key.txt
           ssh -i deployment_key.txt root@${{ secrets.SERVER }} 'cd /srv/shiny-server/Shiny_meta_analyzer/; git checkout master; git pull;'
