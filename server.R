@@ -404,13 +404,37 @@ server <- function(input, output) {
   ################################################
   plotForest <- function(){
     meta <- meta()
-     if (!is.null(meta)) {
-       forest(meta, studlab = paste(dados$data$Studies),
-              comb.random=input$random_comb,
-              comb.fixed=input$fixed_comb)
-     } else {
-       frame()
-     }
+    if (!is.null(meta)) {
+      if (input$random_comb == TRUE || input$fixed_comb == TRUE) {
+        forest(
+          meta,
+          studlab=paste(dados$data$Studies),
+          comb.random=input$random_comb,
+          comb.fixed=input$fixed_comb,
+          variant="classic"
+        )
+      } else {
+        if (1-pchisq(meta$Q, meta$df.Q) > alpha()) { # if p-value > alpha só apresenta fixed effect model
+          forest(
+            meta,
+            studlab=paste(dados$data$Studies),
+            comb.random=FALSE,
+            comb.fixed=TRUE,
+            variant="classic"
+          )
+        } else {
+          forest(
+            meta,
+            studlab=paste(dados$data$Studies),
+            comb.random=TRUE,
+            comb.fixed=FALSE,
+            variant="classic"
+          )
+        }
+      }
+    } else {
+      frame()
+    }
   }
   output$forest <- renderPlot ({
     plotForest()
@@ -434,16 +458,26 @@ server <- function(input, output) {
     meta <- meta()
     if (!is.null(meta)) {
       if (input$random_comb == TRUE && !input$fixed_comb == TRUE) {
-        funnel.meta(meta, studlab = paste(dados$data$Studies),
-                    comb.random=input$random_comb,
-                    comb.fixed=input$fixed_comb)
+        funnel.meta(
+          meta, studlab=paste(dados$data$Studies),
+          comb.random=input$random_comb,
+          comb.fixed=input$fixed_comb
+        )
       } else {
         if (1-pchisq(meta$Q, meta$df.Q) > alpha()) { # if p-value > alpha só apresenta fixed effect model
-          funnel.meta(meta, studlab = paste(dados$data$Studies),
-                  comb.random=FALSE, comb.fixed=TRUE)
+          funnel.meta(
+            meta,
+            studlab=paste(dados$data$Studies),
+            comb.random=FALSE,
+            comb.fixed=TRUE
+          )
         } else {
-          funnel.meta(meta, studlab = paste(dados$data$Studies),
-                  comb.random=TRUE, comb.fixed=FALSE)
+          funnel.meta(
+            meta,
+            studlab=paste(dados$data$Studies),
+            comb.random=TRUE,
+            comb.fixed=FALSE
+          )
         }
       }
     } else {

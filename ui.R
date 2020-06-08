@@ -10,8 +10,9 @@ ui <- dashboardPage(skin = "yellow",
   ## cadastrar o endereço web na conta do google analytics,
   ## e salvar a chave de tracking em arquivo com nome google-analytics.js
   ## na pasta do projeto e sem '<script></script>'
-  
-  dashboardHeader(title = "Meta Analyzer"),
+  dashboardHeader(
+    title = "Meta Analyzer"
+  ),
   dashboardSidebar(
 
     absolutePanel(width="230px", fixed=TRUE,
@@ -39,6 +40,7 @@ ui <- dashboardPage(skin = "yellow",
   ),#end sidebar
   
   dashboardBody(
+    tags$head(includeCSS('www/style.css')),
     tabItems(
       # First tab content
       tabItem(
