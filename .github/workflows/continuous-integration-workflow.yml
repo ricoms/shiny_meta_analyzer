@@ -17,7 +17,6 @@ jobs:
   setup:
     name: App setup
     runs-on: ubuntu-18.04
-    container: rocker/shiny
     needs: build
     steps:
     - run: |
