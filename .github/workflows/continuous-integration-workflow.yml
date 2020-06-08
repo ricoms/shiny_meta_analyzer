@@ -18,7 +18,5 @@ jobs:
     name: App setup
     runs-on: rocker/shiny
     steps:
-    - name: Installs packages
-      run: R -e "install.packages('plyr',dependencies=TRUE, repos='http://cran.rstudio.com/')"
-    - name: generating local dict for language options
-      run: Rscript scripts/turnToBin.R 
+    - run: R -e "install.packages('plyr',dependencies=TRUE, repos='http://cran.rstudio.com/')"
+    - run: Rscript scripts/turnToBin.R 
