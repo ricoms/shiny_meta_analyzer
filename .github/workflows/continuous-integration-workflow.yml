@@ -19,22 +19,8 @@ jobs:
     runs-on: ubuntu-18.04
     needs: build
     steps:
+    - uses: actions/setup-r@v1
     - run: |
-      export R_BASE_VERSION 4.0.1
-      apt-get update \
-      && apt-get install -t unstable -y --no-install-recommends \
-        gcc-9-base \
-        littler \
-        r-cran-littler \
-        r-base=${R_BASE_VERSION}-* \
-        r-base-dev=${R_BASE_VERSION}-* \
-        r-recommended=${R_BASE_VERSION}-* \
-      && ln -s /usr/lib/R/site-library/littler/examples/install.r /usr/local/bin/install.r \
-      && ln -s /usr/lib/R/site-library/littler/examples/install2.r /usr/local/bin/install2.r \
-      && ln -s /usr/lib/R/site-library/littler/examples/installGithub.r /usr/local/bin/installGithub.r \
-      && ln -s /usr/lib/R/site-library/littler/examples/testInstalled.r /usr/local/bin/testInstalled.r \
-      && install.r docopt \
-      && rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
-      && rm -rf /var/lib/apt/lists/*
       R -e "install.packages('plyr',dependencies=TRUE, repos='http://cran.rstudio.com/')"
+    - run: |
       Rscript scripts/turnToBin.R 
