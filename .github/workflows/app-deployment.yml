@@ -40,12 +40,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
           repository: ${{ github.repository }}/shiny-meta-analyzer
+          tags: latest
           tag_with_sha: true
     
-      - name: Clone repository
+      - name: Docker deploy
         uses: appleboy/ssh-action@master
         with:
           username: root
           host: ${{ secrets.SERVER }}
-          script: 'docker stop my-shiny; docker rm my-shiny; docker run -p 80:80 --name my-shiny docker.pkg.github.com/ricoms/shiny_meta_analyzer/shiny-meta-analyzer:latest'
+          script: 'docker stop my-shiny; docker rm my-shiny; docker run -d -p 80:80 --name my-shiny docker.pkg.github.com/ricoms/shiny_meta_analyzer/shiny-meta-analyzer:latest'
           key: ${{ secrets.SSH_KEY }}
