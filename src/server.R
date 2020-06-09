@@ -282,22 +282,25 @@ server <- function(input, output) {
       title = tr("Results"),
       id = "results",
       width = 12,
-      tabPanel(tr("Forest Plot"),
-               wellPanel(
-                 plotOutput("forest", height = 400, width = 800),
-                 downloadButton('downloadForest', tr("Save forest as pdf"))
-               )
+      tabPanel(
+        tr("Forest Plot"),
+        wellPanel(style = "height: 300px;",
+          plotOutput("forest", height = "100%")
+        ),
+        downloadButton('downloadForest', tr("Save forest as pdf"))
       ),
-      tabPanel(tr("Funnel Plot"),
-               wellPanel(
-                 plotOutput("funnel", height = 400, width = 600),
-                 downloadButton('downloadFunnel', tr("Save funnel as pdf"))
-               )
+      tabPanel(
+        tr("Funnel Plot"),
+        wellPanel(style = "height: 300px;",
+          plotOutput("funnel", height = 260, width = 450)
+        ),
+        downloadButton('downloadFunnel', tr("Save funnel as pdf"))
       ),
-      tabPanel("Teste de assimetria",
-               wellPanel(
-                 verbatimTextOutput("beggTest")
-               )
+      tabPanel(
+        tr("Assimetry test"),
+        wellPanel(
+          verbatimTextOutput("beggTest")
+        )
       )
       #tabPanel("Boot Density",
       #         wellPanel(
