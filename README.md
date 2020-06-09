@@ -1,5 +1,5 @@
 
-![Digital Ocean Shiny Docker Deploy](https://github.com/ricoms/shiny_meta_analyzer/workflows/Digital%20Ocean%20Shiny%20Docker%20Deploy/badge.svg?branch=master&event=deployment_status)
+![Digital Ocean Shiny Docker Deploy](https://github.com/ricoms/shiny_meta_analyzer/workflows/Digital%20Ocean%20Shiny%20Docker%20Deploy/badge.svg?branch=master)
 
 # Shiny_meta_analyzer
 
