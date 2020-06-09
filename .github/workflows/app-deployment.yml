@@ -27,6 +27,7 @@ jobs:
 
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
+    needs: [docker-lint]
     runs-on: ubuntu-latest
 
     steps:
