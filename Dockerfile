@@ -10,16 +10,12 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
         libcurl4-gnutls-dev=7.68.0-1 \
         libcairo2-dev/unstable \
         libxt-dev=1:1.1.5-1+b3 \
-        libssl-dev=1.1.1g-1
-
-
-# Download and install ShinyServer (latest version)
-# RUN wget --no-verbose https://s3.amazonaws.com/rstudio-shiny-server-os-build/ubuntu-12.04/x86_64/VERSION -O "version.txt" && \
-    # VERSION=$(cat version.txt)  && \
-RUN VERSION=1.5.7.890 && \
-    wget --no-verbose "https://s3.amazonaws.com/rstudio-shiny-server-os-build/ubuntu-12.04/x86_64/shiny-server-$VERSION-amd64.deb" -O ss-latest.deb && \
-    gdebi -n ss-latest.deb && \
-    rm -f version.txt ss-latest.deb \
+        libssl-dev=1.1.1g-1 \
+    && VERSION=1.5.7.890 \
+        && wget --no-verbose "https://s3.amazonaws.com/rstudio-shiny-server-os-build/ubuntu-12.04/x86_64/shiny-server-$VERSION-amd64.deb" -O ss-latest.deb \
+        && gdebi -n ss-latest.deb \
+        && rm -f version.txt ss-latest.deb \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Install R packages that are required
