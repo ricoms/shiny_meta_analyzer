@@ -41,6 +41,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
           repository: ${{ github.repository }}/shiny-meta-analyzer
+          cache_froms: docker.pkg.github.com/${{ github.repository }}/shiny-meta-analyzer
           tags: latest
           tag_with_sha: true
     
