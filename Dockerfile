@@ -1,4 +1,4 @@
-FROM rocker/shiny
+FROM rocker/shiny:4.0.0
 LABEL maintainer="ricardosavii@gmail.com"
 
 RUN R -e "install.packages('plyr',dependencies=TRUE, repos='http://cran.rstudio.com/')"
@@ -17,4 +17,4 @@ WORKDIR /srv/shiny-server/
 
 EXPOSE 3838
 
-CMD R -e "options('shiny.port'=3838,shiny.host='0.0.0.0'); shiny::runApp('.')"
+CMD ["R", "-e", "options('shiny.port'=3838,shiny.host='0.0.0.0'); shiny::runApp('.')"]

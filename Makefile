@@ -1,3 +1,8 @@
+docker-lint:
+	docker run --rm -i hadolint/hadolint < Dockerfile
+
+lint: docker-lint
+
 build-docker:
 	docker build -f Dockerfile -t shiny_meta_analyzer .
 
