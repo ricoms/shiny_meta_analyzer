@@ -1,0 +1,52 @@
+name: Digital Ocean Shiny Docker Deploy
+
+on: [push]
+
+jobs:
+  docker-lint:
+    name: Hadolint Dockerfile
+    runs-on: macOS-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run hadolint
+        run: |
+          brew install hadolint
+          hadolint ./Dockerfile | tee -a hadolint_lint.txt
+          lintErrors=$(stat -f%z hadolint_lint.txt)
+          if [ "$lintErrors" -gt "0" ]; then
+              echo "Errors have been found, please see below"
+              cat hadolint_lint.txt
+              exit 1
+          else
+              echo "There are no erros found on Dockerfile!!"
+          fi
+
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    needs: [docker-lint]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: ${{ github.repository }}/shiny-meta-analyzer
+          tag_with_sha: true
+    
+    # - name: Clone repository
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #     username: root
+    #     host: ${{ secrets.SERVER }}
+    #     script: 'cd /srv/shiny-server/Shiny_meta_analyzer/; git checkout master; git pull;'
+    #     key: ${{ secrets.SSH_KEY }}
