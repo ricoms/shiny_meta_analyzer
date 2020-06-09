@@ -16,7 +16,7 @@ server <- function(input, output) {
   #Translation function
   ################################################
   tr <- function(text){ # translates text into current language
-    sapply(text,function(s) translation[[s]][[input$language]], USE.NAMES=FALSE)
+    sapply(text, function(s) translation[[s]][[input$language]], USE.NAMES=FALSE)
   }
   
   ################################################
@@ -101,8 +101,8 @@ server <- function(input, output) {
               downloadButton('downloadData', tr("Save Data"))
             ),
             tags$br() 
-          )#endfluidrow
-        ),#endtabpanel
+          )
+        ),
         
         tabPanel(tr("Import File"),
           fluidRow(
@@ -298,7 +298,7 @@ server <- function(input, output) {
       ),
       tabPanel(
         tr("Assimetry test"),
-        wellPanel(
+        wellPanel(style = "height: 300px;",
           verbatimTextOutput("beggTest")
         )
       )
@@ -562,9 +562,9 @@ server <- function(input, output) {
   ################################################
   output$beggTest <- renderPrint ({
      if (!is.null(meta())) {
-       return(metabias(meta(), k.min=3))
+       metabias(meta(), k.min=3)
      } else {
-       frame()
+       invisible("foo")
      }
   })
 }

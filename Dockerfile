@@ -28,7 +28,7 @@ RUN R -e "install.packages('meta',dependencies=TRUE, repos='http://cran.rstudio.
 COPY scripts .
 RUN Rscript turnToBin.R
 RUN rm turnToBin.R dictionary.csv
-RUN cp translation.bin /srv/shiny-server/translation.bin
+RUN mv translation.bin /srv/shiny-server/translation.bin
 
 COPY shiny-server.conf  /etc/shiny-server/shiny-server.conf
 COPY src /srv/shiny-server/
