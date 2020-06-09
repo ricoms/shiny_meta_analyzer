@@ -45,7 +45,7 @@ ui <- dashboardPage(skin = "yellow",
         menuItem(
           "Source code",
           icon = icon("file-code-o"),
-          href = "https://github.com/ricoms/Shiny_meta_analyzer"
+          href = "https://github.com/ricoms/shiny_meta_analyzer"
         )
       )
     )
