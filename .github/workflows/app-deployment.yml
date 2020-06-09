@@ -48,5 +48,5 @@ jobs:
         with:
           username: root
           host: ${{ secrets.SERVER }}
-          script: 'docker stop my-shiny; docker rm my-shiny; docker run -p 3838:3838 --name my-shiny docker.pkg.github.com/ricoms/shiny_meta_analyzer/shiny-meta-analyzer'
+          script: 'docker stop my-shiny; docker rm my-shiny; docker run -p 80:80 --name my-shiny docker.pkg.github.com/ricoms/shiny_meta_analyzer/shiny-meta-analyzer:latest'
           key: ${{ secrets.SSH_KEY }}
