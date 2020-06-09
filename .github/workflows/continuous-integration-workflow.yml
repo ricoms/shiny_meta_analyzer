@@ -20,7 +20,5 @@ jobs:
     needs: build
     steps:
     - uses: actions/setup-r@v1
-    - run: |
-      R -e "install.packages('plyr',dependencies=TRUE, repos='http://cran.rstudio.com/')"
-    - run: |
-      R CMD BATCH scripts/turnToBin.R 
+    - run: R -e "install.packages('plyr',dependencies=TRUE, repos='http://cran.rstudio.com/')"
+    - run: Rscript scripts/turnToBin.R 
