@@ -19,6 +19,9 @@ jobs:
     runs-on: ubuntu-18.04
     needs: build
     steps:
-    - uses: actions/setup-r@v1
+    - name: Setup R
+      uses: r-lib/actions/setup-R@v1
+      with:
+        r-version: '4.0.1'
     - run: R -e "install.packages('plyr',dependencies=TRUE, repos='http://cran.rstudio.com/')"
     - run: Rscript scripts/turnToBin.R 
