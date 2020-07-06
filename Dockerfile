@@ -3,10 +3,10 @@ LABEL maintainer="ricardosavii@gmail.com"
 
 # Install Ubuntu packages
 RUN apt-get update && apt-get install --no-install-recommends -y \
-        sudo=1.9.0-1 \
+        sudo=1.9.1-1 \
         gdebi-core=0.9.5.7+nmu3 \
         pandoc=2.5-3+b1 \
-        pandoc-citeproc=0.15.0.1-1+b4 \
+        pandoc-citeproc=0.15.0.1-1+b5 \
         libcurl4-gnutls-dev=7.68.0-1 \
         libcairo2-dev/unstable \
         libxt-dev=1:1.1.5-1+b3 \
